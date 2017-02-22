@@ -11,7 +11,7 @@
 
 const assign = require('object-assign');
 
-module.exports = function(options) {
+module.exports = function(options, inlineRequires) {
   options = assign({
     env: 'production',
     moduleMap: {},
@@ -22,7 +22,7 @@ module.exports = function(options) {
     presets: [
       require('babel-preset-fbjs/configure')({
         autoImport: true,
-        inlineRequires: true,
+        inlineRequires: !!inlineRequires,
         rewriteModules: {
           map: assign({},
             require('fbjs-scripts/third-party-module-map'),

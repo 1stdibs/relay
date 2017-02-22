@@ -10,28 +10,8 @@
 'use strict';
 
 const babel = require('gulp-babel');
-const babelOptions = require('./scripts/getBabelOptions')({
-  moduleMap: {
-    'babel-runtime/helpers/extends': 'babel-runtime/helpers/extends',
-    'babel-runtime/core-js/promise': 'fbjs/lib/Promise',
-    'babel-runtime/core-js/json/stringify': 'babel-runtime/core-js/json/stringify',
-    'babel-runtime/helpers/classCallCheck': 'babel-runtime/helpers/classCallCheck',
-    'babel-runtime/helpers/possibleConstructorReturn': 'babel-runtime/helpers/possibleConstructorReturn',
-    'babel-runtime/helpers/inherits': 'babel-runtime/helpers/inherits',
-    'babel-runtime/core-js/object/assign': 'babel-runtime/core-js/object/assign',
-    'babel-runtime/core-js/object/keys': 'babel-runtime/core-js/object/keys',
-    'babel-runtime/core-js/array/from': 'babel-runtime/core-js/array/from',
-    'babel-runtime/core-js/object/freeze': 'babel-runtime/core-js/object/freeze',
-    'babel-runtime/helpers/defineProperty': 'babel-runtime/helpers/defineProperty',
-    'React': 'react',
-    'ReactDOM': 'react-dom',
-    'ReactNative': 'react-native',
-    'StaticContainer.react': 'react-static-container',
-  },
-  plugins: [
-    'transform-runtime',
-  ],
-});
+const getBabelOptions = require('./scripts/getBabelOptions');
+const assign = require('object-assign');
 const del = require('del');
 const derequire = require('gulp-derequire');
 const flatten = require('gulp-flatten');
@@ -40,6 +20,32 @@ const gulpUtil = require('gulp-util');
 const header = require('gulp-header');
 const runSequence = require('run-sequence');
 const webpackStream = require('webpack-stream');
+const mergeStream = require('merge-stream');
+
+function buildBabelOptions(isServerBuild) {
+  return getBabelOptions({
+    moduleMap: {
+      'babel-runtime/helpers/extends': 'babel-runtime/helpers/extends',
+      'babel-runtime/core-js/promise': 'fbjs/lib/Promise',
+      'babel-runtime/core-js/json/stringify': 'babel-runtime/core-js/json/stringify',
+      'babel-runtime/helpers/classCallCheck': 'babel-runtime/helpers/classCallCheck',
+      'babel-runtime/helpers/possibleConstructorReturn': 'babel-runtime/helpers/possibleConstructorReturn',
+      'babel-runtime/helpers/inherits': 'babel-runtime/helpers/inherits',
+      'babel-runtime/core-js/object/assign': 'babel-runtime/core-js/object/assign',
+      'babel-runtime/core-js/object/keys': 'babel-runtime/core-js/object/keys',
+      'babel-runtime/core-js/array/from': 'babel-runtime/core-js/array/from',
+      'babel-runtime/core-js/object/freeze': 'babel-runtime/core-js/object/freeze',
+      'babel-runtime/helpers/defineProperty': 'babel-runtime/helpers/defineProperty',
+      'React': 'react',
+      'ReactDOM': 'react-dom',
+      'ReactNative': 'react-native',
+      'StaticContainer.react': 'react-static-container',
+    },
+    plugins: [
+      'transform-runtime',
+    ]
+  }, !isServerBuild);
+}
 
 const DEVELOPMENT_HEADER = [
   '/**',
@@ -105,8 +111,12 @@ const buildDist = function(opts) {
 
 const paths = {
   dist: 'dist',
-  entry: 'lib/Relay.js',
-  lib: 'lib',
+  entry: 'lib/**/Relay.js',
+  libBase: 'lib',
+  lib: {
+    client: 'lib',
+    server: 'lib/server'
+  },
   src: [
     '*src/**/*.js',
     '!src/**/__tests__/**/*.js',
@@ -115,15 +125,24 @@ const paths = {
 };
 
 gulp.task('clean', function() {
-  return del([paths.dist, paths.lib]);
+  return del([paths.dist, paths.libBase]);
 });
 
 gulp.task('modules', function() {
-  return gulp
+  const server = gulp
     .src(paths.src)
-    .pipe(babel(babelOptions))
+    .pipe(babel(buildBabelOptions(true)))
     .pipe(flatten())
-    .pipe(gulp.dest(paths.lib));
+    .pipe(gulp.dest(paths.lib.server));
+
+  const client = gulp
+    .src(paths.src)
+    .pipe(babel(buildBabelOptions()))
+    .pipe(flatten())
+    .pipe(gulp.dest(paths.lib.client));
+
+    return mergeStream(server, client);
+
 });
 
 gulp.task('dist', ['modules'], function() {
@@ -131,13 +150,27 @@ gulp.task('dist', ['modules'], function() {
     debug: true,
     output: 'relay.js',
   };
-  return gulp.src(paths.entry)
+  const serverDistOpts = assign({}, distOpts, {
+    output: 'relay-server.js'
+  });
+
+  const client = gulp.src(paths.entry)
     .pipe(buildDist(distOpts))
     .pipe(derequire())
     .pipe(header(DEVELOPMENT_HEADER, {
       version: process.env.npm_package_version,
     }))
     .pipe(gulp.dest(paths.dist));
+
+    const server = gulp.src(paths.entry)
+      .pipe(buildDist(serverDistOpts))
+      .pipe(derequire())
+      .pipe(header(DEVELOPMENT_HEADER, {
+        version: process.env.npm_package_version,
+      }))
+      .pipe(gulp.dest(paths.dist));
+
+      return mergeStream(client, server);
 });
 
 gulp.task('dist:min', ['modules'], function() {
@@ -145,12 +178,26 @@ gulp.task('dist:min', ['modules'], function() {
     debug: false,
     output: 'relay.min.js',
   };
-  return gulp.src(paths.entry)
+  const serverDistOpts = assign({}, distOpts, {
+    output: 'relay-server.min.js'
+  });
+
+  const client = gulp.src(paths.entry)
     .pipe(buildDist(distOpts))
     .pipe(header(PRODUCTION_HEADER, {
       version: process.env.npm_package_version,
     }))
     .pipe(gulp.dest(paths.dist));
+
+  const server = gulp.src(paths.entry)
+    .pipe(buildDist(serverDistOpts))
+    .pipe(header(PRODUCTION_HEADER, {
+      version: process.env.npm_package_version,
+    }))
+    .pipe(gulp.dest(paths.dist));
+
+    return mergeStream(client, server);
+
 });
 
 gulp.task('website:check-version', function(cb) {
