@@ -2,8 +2,7 @@
 yarn.lock
 node_modules
 npm-debug.log
-/dist/
-/lib/
+yarn-error.log
 /website/build
 /website/src/relay/docs
 /website/src/relay/graphql
