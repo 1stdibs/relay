@@ -1,6 +1,6 @@
 {
-  "name": "react-relay",
-  "description": "A framework for building data-driven React applications.",
+  "name": "dibs-react-relay",
+  "description": "1stdibs (hopefully) temp fork of... A framework for building data-driven React applications.",
   "version": "0.10.0",
   "keywords": [
     "graphql",
