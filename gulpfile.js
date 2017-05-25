@@ -255,6 +255,7 @@ gulp.task('copy-files', function() {
       gulp
         .src([
           'LICENSE',
+          '.npmrc',
           '*' + PACKAGES + '/' + build.package + '/*',
           '!' + PACKAGES + '/' + build.package + '/**/*.js'
         ])
