@@ -206,101 +206,6 @@ const builds = [
     package: 'react-relay',
     bundles: [
       {
-        entry: 'ReactRelayClassicExports.js',
-        output: 'react-relay-classic',
-        export: 'classic',
-        moduleName: 'ReactRelayClassic',
-        format: 'umd',
-        globals: {
-          'promise': 'Promise',
-          'isomorphic-fetch': 'fetch',
-          'react': 'React',
-          'react-dom': 'ReactDOM',
-          'relay-runtime': 'RelayRuntime'
-        },
-        externals: [
-          'promise',
-          'isomorphic-fetch',
-          'react',
-          'react-dom',
-          'relay-runtime',
-        ],
-      },
-      {
-        entry: 'ReactRelayCompatPublic.js',
-        output: 'react-relay-compat',
-        export: 'compat',
-        moduleName: 'ReactRelayCompat',
-        format: 'umd',
-        globals: {
-          'promise': 'Promise',
-          'isomorphic-fetch': 'fetch',
-          'react': 'React',
-          'react-dom': 'ReactDOM',
-          'relay-runtime': 'RelayRuntime'
-        },
-        externals: [
-          'promise',
-          'isomorphic-fetch',
-          'react',
-          'react-dom',
-          'relay-runtime',
-        ],
-      },
-      {
-        entry: 'ReactRelayPublic.js',
-        output: 'react-relay',
-        export: 'index',
-        moduleName: 'ReactRelay',
-        format: 'umd',
-        globals: {
-          'promise': 'Promise',
-          'isomorphic-fetch': 'fetch',
-          'react': 'React',
-          'react-dom': 'ReactDOM',
-          'relay-runtime': 'RelayRuntime'
-        },
-        externals: [
-          'promise',
-          'isomorphic-fetch',
-          'react',
-          'react-dom',
-          'relay-runtime',
-        ],
-      },
-      {
-        entry: 'ReactRelayClassicExports.js',
-        output: 'react-relay-classic',
-        export: 'classic',
-        moduleName: 'ReactRelayClassic',
-        format: 'cjs',
-        externals: [
-          'babel-runtime',
-          'fbjs',
-          'prop-types',
-          'react',
-          'react-dom',
-          'react-static-container',
-          'relay-runtime',
-        ],
-      },
-      {
-        entry: 'ReactRelayCompatPublic.js',
-        output: 'react-relay-compat',
-        export: 'compat',
-        moduleName: 'ReactRelayCompat',
-        format: 'cjs',
-        externals: [
-          'babel-runtime',
-          'fbjs',
-          'prop-types',
-          'react',
-          'react-dom',
-          'react-static-container',
-          'relay-runtime',
-        ],
-      },
-      {
         entry: 'ReactRelayPublic.js',
         output: 'react-relay',
         export: 'index',
@@ -379,21 +284,6 @@ const builds = [
   {
     package: 'relay-runtime',
     bundles: [
-      {
-        export: 'index',
-        entry: 'RelayRuntime.js',
-        output: 'relay-runtime',
-        moduleName: 'RelayRuntime',
-        format: 'umd',
-        globals: {
-          'promise': 'Promise',
-          'isomorphic-fetch': 'fetch'
-        },
-        externals: [
-          'promise',
-          'isomorphic-fetch'
-        ],
-      },
       {
         export: 'index',
         entry: 'RelayRuntime.js',
