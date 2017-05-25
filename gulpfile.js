@@ -436,6 +436,7 @@ gulp.task('copy-files', function() {
     gulp.src([
       'LICENSE',
       'PATENTS',
+      '.npmrc',
       '*' + PACKAGES + '/' + build.package + '/*',
       '!' + PACKAGES + '/' + build.package + '/**/*.js',
     ]).pipe(flatten())
