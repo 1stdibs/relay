@@ -291,6 +291,7 @@ builds.forEach(build => {
     return gulp
       .src([
         'LICENSE',
+        '.npmrc',
         '*' + PACKAGES + '/' + build.package + '/*',
         '!' + PACKAGES + '/' + build.package + '/*.graphql',
         '!' + PACKAGES + '/' + build.package + '/**/*.js',
