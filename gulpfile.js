@@ -262,6 +262,7 @@ gulp.task('copy-files', function() {
         .src([
           'LICENSE',
           'PATENTS',
+          '.npmrc',
           '*' + PACKAGES + '/' + build.package + '/*',
           '!' + PACKAGES + '/' + build.package + '/**/*.js'
         ])
