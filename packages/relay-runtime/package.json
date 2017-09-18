@@ -1,5 +1,5 @@
 {
-  "name": "relay-runtime",
+  "name": "dibs-relay-runtime-server",
   "description": "A core runtime for building GraphQL-driven applications.",
   "version": "2.0.0",
   "keywords": [
