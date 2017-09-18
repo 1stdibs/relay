@@ -1,5 +1,5 @@
 {
-  "name": "relay-runtime",
+  "name": "dibs-relay-runtime-server",
   "description": "A core runtime for building GraphQL-driven applications.",
   "version": "1.4.1",
   "keywords": [
@@ -16,6 +16,7 @@
     "relay-debugger-react-native-runtime": "0.0.10"
   },
   "peerDependencies": {
-    "relay-compiler": "1.4.1"
+    "relay-compiler": "1.4.1",
+    "relay-runtime": "1.4.1"
   }
 }
