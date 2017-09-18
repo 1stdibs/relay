@@ -1,5 +1,5 @@
 {
-  "name": "react-relay",
+  "name": "dibs-react-relay-server",
   "description": "A framework for building GraphQL-driven React applications.",
   "version": "1.3.0",
   "keywords": [
@@ -16,9 +16,10 @@
     "fbjs": "^0.8.1",
     "prop-types": "^15.5.8",
     "react-static-container": "^1.0.1",
-    "relay-runtime": "1.3.0"
+    "dibs-relay-runtime-server": "1.3.0"
   },
   "peerDependencies": {
+    "react-relay": "1.3.0",
     "react": "^16.0.0-a || ^15.0.0 || ^0.14.0"
   }
 }

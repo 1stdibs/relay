@@ -47,7 +47,7 @@ const babelOptions = require('./scripts/getBabelOptions')({
     React: 'react',
     ReactDOM: 'react-dom',
     ReactNative: 'react-native',
-    RelayRuntime: 'relay-runtime',
+    RelayRuntime: 'dibs-relay-runtime-server',
     'relay-debugger-react-native-runtime':
       'relay-debugger-react-native-runtime',
     signedsource: 'signedsource',
@@ -150,69 +150,16 @@ const DIST = 'dist';
 
 const builds = [
   {
-    package: 'babel-plugin-relay',
-    exports: {
-      index: 'BabelPluginRelay.js'
-    },
-    bundles: [
-      {
-        entry: 'BabelPluginRelay.js',
-        output: 'babel-plugin-relay',
-        libraryName: 'BabelPluginRelay',
-        libraryTarget: 'commonjs2',
-        target: 'node'
-      }
-    ]
-  },
-  {
     package: 'react-relay',
     exports: {
-      classic: 'ReactRelayClassicExports.js',
-      compat: 'ReactRelayCompatPublic.js',
       index: 'ReactRelayPublic.js'
     },
     bundles: [
-      {
-        entry: 'ReactRelayClassicExports.js',
-        output: 'react-relay-classic',
-        libraryName: 'ReactRelayClassic',
-        libraryTarget: 'umd'
-      },
-      {
-        entry: 'ReactRelayCompatPublic.js',
-        output: 'react-relay-compat',
-        libraryName: 'ReactRelayCompat',
-        libraryTarget: 'umd'
-      },
       {
         entry: 'ReactRelayPublic.js',
         output: 'react-relay',
         libraryName: 'ReactRelay',
         libraryTarget: 'umd'
-      }
-    ]
-  },
-  {
-    package: 'relay-compiler',
-    exports: {
-      index: 'RelayCompilerPublic.js'
-    },
-    bundles: [
-      {
-        entry: 'RelayCompilerPublic.js',
-        output: 'relay-compiler',
-        libraryName: 'RelayCompiler',
-        libraryTarget: 'commonjs2',
-        target: 'node',
-        noMinify: true // Note: uglify can't yet handle modern JS
-      }
-    ],
-    bins: [
-      {
-        entry: 'RelayCompilerBin.js',
-        output: 'relay-compiler',
-        libraryTarget: 'commonjs2',
-        target: 'node'
       }
     ]
   },
